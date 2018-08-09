@@ -18,7 +18,7 @@ app.use(express.static("./public/assets"));
 
 require('./controllers/burger_controller')(app);
 
-dbase.sequelize.sync({force: true}).then(function(){
+dbase.sequelize.sync().then(function(){
   app.listen(PORT, function() {
     console.log("App listening on PORT " + PORT);
   });

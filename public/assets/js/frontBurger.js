@@ -1,6 +1,6 @@
 $(document).ready(function(){
 
-$.get('api/burgers');
+$.get('/api/burgers');
 
 $("#burgerBtn").on('click', function (event) {
     event.preventDefault();
@@ -9,7 +9,6 @@ $("#burgerBtn").on('click', function (event) {
     }
 
     $("#burgerInput").val("");
-
 
 
     $.post('/api/burgers', burgerItem).then(function (data) {
