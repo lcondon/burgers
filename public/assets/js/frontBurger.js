@@ -21,7 +21,7 @@ $("#burgerBtn").on('click', function (event) {
 
         $(".devourBtn").click(function () {
             var id = "#" + $(this).attr('flavor');
-            var burger = $(this).attr('flavor');
+            var burger = {route: $(this).attr('flavor')};
             var btn = $(this);
             console.log(id)
 

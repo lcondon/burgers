@@ -39,8 +39,8 @@ module.exports = function (app) {
     })
 
     app.put('/api/burgers', function (req, res) {
-        var bgName = req.body.data;
-        console.log(bgName)
+        var bgName = req.body.route;
+        console.log(req.body);
         dbase.Burgers.update({
             devoured: true
           }, {
