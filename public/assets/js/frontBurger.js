@@ -1,15 +1,18 @@
+$(document).ready(function(){
+
+$.get('api/burgers');
+
 $("#burgerBtn").on('click', function (event) {
     event.preventDefault();
     var burgerItem = {
         burgerName: $("#burgerInput").val().trim(),
-        devoured: false
     }
 
     $("#burgerInput").val("");
 
 
 
-    $.post('/api/new', burgerItem).then(function (data) {
+    $.post('/api/burgers', burgerItem).then(function (data) {
         console.log(data);
         var listItem = $('<li>').addClass("list-group-item d-flex justify-content-between align-items-center")
             .html(burgerItem.burgerName + `<button class="btn btn-danger devourBtn" flavor="${data}">Devour</button>`)
@@ -22,7 +25,11 @@ $("#burgerBtn").on('click', function (event) {
             var btn = $(this);
             console.log(id)
 
-            $.post('/api/eaten', burger).then(function (data) {
+            $.ajax({
+                method: 'PUT',
+                url: '/api/burgers',
+                data: burger
+            }).then(function (data) {
                 $(id).appendTo('#eaten');
                 btn.remove();
             })
@@ -36,8 +43,14 @@ $(".devourBtn").on('click', function () {
     var btn = $(this);
     console.log(id)
 
-    $.post('/api/eaten', burger).then(function (data) {
+    $.ajax({
+        method: 'PUT',
+        url: '/api/burgers',
+        data: burger
+    }).then(function (data) {
         $(id).appendTo('#eaten');
         btn.remove();
     })
+});
+
 });

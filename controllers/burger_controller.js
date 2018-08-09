@@ -1,36 +1,36 @@
 var express = require('express');
-var Burgers = require('../models/burger');
-
-Burgers.sync();
+var dbase = require('../models');
 
 module.exports = function (app) {
-    app.get(['/', '/home'], function (req, res) {
+
+
+    app.get(['/api/burgers','/','/home'], function(req,res){
         var burgers = {};
-        Burgers.findAll({
+        dbase.Burgers.findAll({
             where: {
                 devoured: true
             }
-        }).then(function (result) {
-            burgers.eaten = result;
+        }).then(function (result1) {
+            burgers.eaten = result1;
         })
-        Burgers.findAll({
+        dbase.Burgers.findAll({
             where: {
                 devoured: false
             }
-        }).then(function (result) {
-            burgers.uneaten = result;
+        }).then(function (result2) {
+            burgers.uneaten = result2;
             res.render('index', {
                 burgers: burgers
             })
         })
     });
 
-    app.post('/api/new', function (req, res) {
+    app.post('/api/burgers', function (req, res) {
         var burger = req.body;
 
         var routeName = burger.burgerName.replace(/\s+/g, "").toLowerCase();
 
-        Burgers.create({
+        dbase.Burgers.create({
             routeName: routeName,
             burgerName: burger.burgerName,
             devoured: false
@@ -38,15 +38,16 @@ module.exports = function (app) {
         res.send(routeName);
     })
 
-    app.post('/api/eaten', function (req, res) {
-        var bgName = req.body.route;
+    app.put('/api/burgers', function (req, res) {
+        var bgName = req.body.data;
         console.log(bgName)
-        Burgers.findOne({
-            where: { routeName: bgName }
-        }).then(function (obj) {
-            if (obj) {
-                obj.update({ devoured: true })
+        dbase.Burgers.update({
+            devoured: true
+          }, {
+            where: {
+              routeName: bgName
             }
+          }).then(function () {
             res.end();
         })
     })
