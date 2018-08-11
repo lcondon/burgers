@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lcondon/burgersORM.git"
+    "url": "git+https://github.com/lcondon/burgers.git"
   },
   "keywords": [],
   "author": "",
@@ -17,7 +17,7 @@
   "bugs": {
     "url": "https://github.com/lcondon/burgers/issues"
   },
-  "homepage": "https://github.com/lcondon/burgersORM#readme",
+  "homepage": "https://github.com/lcondon/burgers#readme",
   "dependencies": {
     "body-parser": "^1.18.3",
     "dotenv": "^6.0.0",
