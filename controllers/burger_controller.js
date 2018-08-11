@@ -1,54 +1,45 @@
 var express = require('express');
-var dbase = require('../models');
+var orm = require('../config/orm');
 
 module.exports = function (app) {
 
 
     app.get(['/api/burgers','/','/home'], function(req,res){
-        var burgers = {};
-        dbase.Burgers.findAll({
-            where: {
-                devoured: true
+        var burgers = {
+            eaten: [],
+            uneaten: []
+        };
+        orm.selectAll(function(results){
+            for(var i = 0; i < results.length; i++){
+                if(results[i].devoured == true){
+                    burgers.eaten.push(results[i])
+                } else {
+                    burgers.uneaten.push(results[i])
+                }
             }
-        }).then(function (result1) {
-            burgers.eaten = result1;
-        })
-        dbase.Burgers.findAll({
-            where: {
-                devoured: false
-            }
-        }).then(function (result2) {
-            burgers.uneaten = result2;
             res.render('index', {
                 burgers: burgers
             })
+
         })
     });
 
     app.post('/api/burgers', function (req, res) {
         var burger = req.body;
 
-        var routeName = burger.burgerName.replace(/\s+/g, "").toLowerCase();
+        burger.routeName = burger.burgerName.replace(/\s+/g, "").toLowerCase();
 
-        dbase.Burgers.create({
-            routeName: routeName,
-            burgerName: burger.burgerName,
-            devoured: false
+        orm.insertOne(burger, function(results){
+            res.send(burger.routeName);
         })
-        res.send(routeName);
+        
     })
 
     app.put('/api/burgers', function (req, res) {
         var bgName = req.body.route;
         console.log(bgName)
-        dbase.Burgers.update({
-            devoured: true
-          }, {
-            where: {
-              routeName: bgName
-            }
-          }).then(function () {
+        orm.devourOne(bgName, function(results){
             res.end();
-        })
+        });
     })
 };
